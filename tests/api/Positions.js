@@ -15,10 +15,10 @@ chai.use(chaiHttp)
 | Test /Get routes
 |--------------------------------------------------------------------------
 */
-describe('/GET /api/v1/users/index', () => {
-    it('it should GET all the users', (done) => {
+describe('/GET /api/v1/positions/index', () => {
+    it('it should GET all the positions', (done) => {
         chai.request(app)
-            .get('/api/v1/users')
+            .get('/api/v1/positions')
             .end((err, res) => {
                 res.should.have.status(200)
                 res.body.data.should.not.be.empty
@@ -32,10 +32,10 @@ describe('/GET /api/v1/users/index', () => {
 | Test /Post routes
 |--------------------------------------------------------------------------
 */
-describe('/POST /api/v1/users/index', () => {
-    it('it should POST data to create new user', (done) => {
+describe('/POST /api/v1/positions/index', () => {
+    it('it should POST data to create new position', (done) => {
         chai.request(app)
-            .get('/api/v1/users')
+            .get('/api/v1/positions')
             .end((err, res) => {
                 res.should.have.status(200)
                 res.body.data.should.not.be.empty
@@ -49,8 +49,8 @@ describe('/POST /api/v1/users/index', () => {
 | Test /Put routes
 |--------------------------------------------------------------------------
 */
-describe('/PUT /api/v1/users', () => {
-    it('it should PUT data to update user', (done) => {
+describe('/PUT /api/v1/positions', () => {
+    it('it should PUT data to update position', (done) => {
         chai.request(app)
             .get('/api/v1/users')
             .end((err, res) => {
