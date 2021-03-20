@@ -3,7 +3,7 @@ process.env.NODE_ENV = "test"
 import chai from "chai"
 import chaiHttp from "chai-http"
 
-import app from "../../src/app"
+import app from '../../src/app'
 
 const should = chai.should()
 
@@ -18,11 +18,11 @@ chai.use(chaiHttp)
 describe('/GET /api/v1/users/index', () => {
     it('it should GET all the users', (done) => {
         chai.request(app)
-            .get('/api/v1/users')
+            .get('/api/v1/users/index')
             .end((err, res) => {
-                res.should.have.status(200)
-                res.body.data.should.not.be.empty
-                done()
+                res.should.have.status(200);
+                res.body.data.should.not.be.empty;
+                done();
             })
     })
 })
@@ -35,10 +35,11 @@ describe('/GET /api/v1/users/index', () => {
 describe('/POST /api/v1/users/index', () => {
     it('it should POST data to create new user', (done) => {
         chai.request(app)
-            .get('/api/v1/users')
+            .post('/api/v1/users/index')
             .end((err, res) => {
                 res.should.have.status(200)
-                res.body.data.should.not.be.empty
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').eql('success');
                 done()
             })
     })
@@ -49,13 +50,14 @@ describe('/POST /api/v1/users/index', () => {
 | Test /Put routes
 |--------------------------------------------------------------------------
 */
-describe('/PUT /api/v1/users', () => {
+describe('/PUT /api/v1/users/index', () => {
     it('it should PUT data to update user', (done) => {
         chai.request(app)
-            .get('/api/v1/users')
+            .put('/api/v1/users/index')
             .end((err, res) => {
                 res.should.have.status(200)
-                res.body.data.should.not.be.empty
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').eql('success');
                 done()
             })
     })

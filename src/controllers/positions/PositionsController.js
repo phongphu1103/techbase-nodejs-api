@@ -2,6 +2,7 @@ import { isArray, isEmpty } from 'lodash';
 import { Op } from 'sequelize';
 
 import Position from '../../models/Position';
+import ExceptionConfig from '../../configs/ExceptionConfig';
 
 class PositionsController
 {

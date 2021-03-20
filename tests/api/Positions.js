@@ -3,9 +3,9 @@ process.env.NODE_ENV = "test"
 import chai from "chai"
 import chaiHttp from "chai-http"
 
-import app from "../../src/app"
+import app from '../../src/app'
 
-const should = chai.should()
+const should = chai.should();
 
 chai.use(chaiHttp)
 
@@ -18,11 +18,11 @@ chai.use(chaiHttp)
 describe('/GET /api/v1/positions/index', () => {
     it('it should GET all the positions', (done) => {
         chai.request(app)
-            .get('/api/v1/positions')
+            .get('/api/v1/positions/index')
             .end((err, res) => {
-                res.should.have.status(200)
-                res.body.data.should.not.be.empty
-                done()
+                res.should.have.status(200);
+                res.body.data.should.not.be.empty;
+                done();
             })
     })
 })
@@ -34,12 +34,18 @@ describe('/GET /api/v1/positions/index', () => {
 */
 describe('/POST /api/v1/positions/index', () => {
     it('it should POST data to create new position', (done) => {
+        let item = {
+            name: 'Manager',
+            code: 'MNG'
+        }
         chai.request(app)
-            .get('/api/v1/positions')
+            .post('/api/v1/positions/index')
+            .send(item)
             .end((err, res) => {
-                res.should.have.status(200)
-                res.body.data.should.not.be.empty
-                done()
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').eql('success');
+                done();
             })
     })
 })
@@ -49,13 +55,19 @@ describe('/POST /api/v1/positions/index', () => {
 | Test /Put routes
 |--------------------------------------------------------------------------
 */
-describe('/PUT /api/v1/positions', () => {
+describe('/PUT /api/v1/positions/index', () => {
     it('it should PUT data to update position', (done) => {
+        let item = {
+            name: 'Manager',
+            code: 'MNG'
+        }
         chai.request(app)
-            .get('/api/v1/users')
+            .put('/api/v1/positions/index')
+            .send(item)
             .end((err, res) => {
                 res.should.have.status(200)
-                res.body.data.should.not.be.empty
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').eql('success');
                 done()
             })
     })
