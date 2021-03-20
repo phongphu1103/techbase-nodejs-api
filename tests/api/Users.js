@@ -20,6 +20,7 @@ describe('/GET /api/v1/users/index', () => {
         chai.request(app)
             .get('/api/v1/users/index')
             .end((err, res) => {
+                if (err) return done(err);
                 res.should.have.status(200);
                 res.body.data.should.not.be.empty;
                 done();
@@ -37,6 +38,7 @@ describe('/POST /api/v1/users/index', () => {
         chai.request(app)
             .post('/api/v1/users/index')
             .end((err, res) => {
+                if (err) return done(err);
                 res.should.have.status(200)
                 res.body.should.be.a('object');
                 res.body.should.have.property('status').eql('success');
@@ -55,6 +57,7 @@ describe('/PUT /api/v1/users/index', () => {
         chai.request(app)
             .put('/api/v1/users/index')
             .end((err, res) => {
+                if (err) return done(err);
                 res.should.have.status(200)
                 res.body.should.be.a('object');
                 res.body.should.have.property('status').eql('success');
