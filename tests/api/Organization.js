@@ -4,7 +4,7 @@ import chai from "chai"
 import chaiHttp from "chai-http"
 
 import app from '../../src/app';
-import Position from '../../src/models/Position';
+import Organization from '../../src/models/Organization';
 
 const should = chai.should();
 
@@ -16,10 +16,10 @@ const token = 'Token string';
 | Test /Get routes
 |--------------------------------------------------------------------------
 */
-describe('/GET /api/v1/positions/index', () => {
-    it('it should GET all the positions', (done) => {
+describe('/GET /api/v1/organizations/index', () => {
+    it('it should GET all the organizations', (done) => {
         chai.request(app)
-            .get('/api/v1/positions/index')
+            .get('/api/v1/organizations/index')
             .set('X-Access-Token', token)
             .end((err, res) => {
                 if (err) return done(err);
@@ -35,13 +35,13 @@ describe('/GET /api/v1/positions/index', () => {
 | Test /Post routes
 |--------------------------------------------------------------------------
 */
-describe('/POST /api/v1/positions/index', () => {
+describe('/POST /api/v1/organizations/index', () => {
     it('is should not POST data without code', (done) => {
         let params = {
-            name: 'Manager',
+            name: 'Design',
         }
         chai.request(app)
-            .post('/api/v1/positions/index')
+            .post('/api/v1/organizations/index')
             .send(params)
             .set('X-Access-Token', token)
             .end((err, res) => {
@@ -54,11 +54,11 @@ describe('/POST /api/v1/positions/index', () => {
     }),
     it('is should not POST data with a registered code', (done) => {
         let params = {
-            name: 'Manager',
-            code: 'MNG01'
+            name: 'Design',
+            code: 'ACC'
         }
         chai.request(app)
-            .post('/api/v1/positions/index')
+            .post('/api/v1/organizations/index')
             .send(params)
             .set('X-Access-Token', token)
             .end((err, res) => {
@@ -71,11 +71,11 @@ describe('/POST /api/v1/positions/index', () => {
     }),
     it('it should POST data to create new position', (done) => {
         let params = {
-            name: 'Manager',
-            code: 'MNG02'
+            name: 'Design',
+            code: 'DS'
         }
         chai.request(app)
-            .post('/api/v1/positions/index')
+            .post('/api/v1/organizations/index')
             .send(params)
             .set('X-Access-Token', token)
             .end((err, res) => {
@@ -93,15 +93,15 @@ describe('/POST /api/v1/positions/index', () => {
 | Test /Put routes
 |--------------------------------------------------------------------------
 */
-describe('/PUT /api/v1/positions/index/:id', () => {
+describe('/PUT /api/v1/organizations/index/:id', () => {
     it('it should PUT data to update position', (done) => {
         let params = {
-            name: 'Manager',
-            code: 'MNG03'
+            name: 'Marketing',
+            code: 'MKT'
         }
         Position.build(params).save().then(item => {
             chai.request(app)
-                .put(`/api/v1/positions/index/${item.id}`)
+                .put(`/api/v1/organizations/index/${item.id}`)
                 .set('X-Access-Token', token)
                 .send(params)
                 .end((err, res) => {
