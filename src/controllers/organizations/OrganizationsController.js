@@ -51,7 +51,7 @@ class OrganizationsController {
                 items = await Organization.findOne(options);
             }else{
                 options.where = conq;
-                items = await Organization.findAll({...options, order: [['parent_id', 'ASC' ], ['level', 'ASC']]});
+                items = await Organization.findAll({...options, order: [['parent_id', 'ASC' ], ['level', 'ASC']], subQuery: false });
             }
 
             return res.jsonSuccess({
