@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 import Organization from '../../models/Organization';
 import User from '../../models/User';
 import ExceptionConfig from '../../configs/ExceptionConfig';
+import Recursive from '../../utils/Recursive';
 
 class OrganizationsController {
     async get_index(req, res, next) {
@@ -51,7 +52,25 @@ class OrganizationsController {
                 items = await Organization.findOne(options);
             }else{
                 options.where = conq;
-                items = await Organization.findAll({...options, order: [['parent_id', 'ASC' ], ['level', 'ASC']], subQuery: false });
+                let results = await Organization.findAll({
+                    ...options,
+                    order: [['parent_id', 'ASC' ], ['level', 'ASC']],
+                    subQuery: false,
+                });
+
+                // reorder organizations
+                let ids = [];
+                Recursive.reorder(results, 0, ids);
+                items = [];
+                for(let i in ids){
+                    let id = ids[i];
+                    for(let j in results){
+                        let item = results[j];
+                        if(item.id == id){
+                            items.push(item);
+                        }
+                    }
+                }
             }
 
             return res.jsonSuccess({

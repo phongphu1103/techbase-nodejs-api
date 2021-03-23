@@ -78,7 +78,11 @@ class UsersController
                 Recursive.reorder(organizations, 0, ids);
                 const orderOrganizationIds = ids.toString();
                 options.where = conq;
-                items = await User.findAll({...options, order: [ [literal(`FIELD(\`Teams->UO\`.\`organization_id\`, ${orderOrganizationIds})`)], ['position_id', 'ASC']], subQuery: false });
+                items = await User.findAll({
+                    ...options,
+                    order: [ [literal(`FIELD(\`Teams->UO\`.\`organization_id\`, ${orderOrganizationIds})`)], ['position_id', 'ASC']],
+                    subQuery: false
+                });
             }
 
             return res.jsonSuccess({
