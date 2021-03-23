@@ -1,13 +1,15 @@
 import { isArray, isEmpty } from 'lodash';
+import { literal } from 'sequelize';
 
 import Organization from '../../models/Organization';
 import Position from '../../models/Position';
 import User from '../../models/User';
 import UserOrganization from '../../models/UserOrganization';
-import UsersModel from "../../models/UsersModel"
-import ExceptionConfig from "../../configs/ExceptionConfig"
-import HashPassword from "../../utils/HashPassword"
-import Session from "../../utils/Session"
+import UsersModel from '../../models/UsersModel';
+import ExceptionConfig from '../../configs/ExceptionConfig';
+import HashPassword from '../../utils/HashPassword';
+import Recursive from '../../utils/Recursive';
+import Session from '../../utils/Session';
 
 class UsersController
 {
@@ -64,8 +66,19 @@ class UsersController
                 options.where = {...conq, id: pk};
                 items = await User.findOne(options);
             }else{
+                // get all organizations
+                let organizations = await Organization.findAll({
+                    attributes: ['id', 'parent_id', 'level'],
+                    where: { status: 'active' },
+                    order: [['level', 'ASC']],
+                    raw: true
+                });
+
+                let ids = [];
+                Recursive.reorder(organizations, 0, ids);
+                const orderOrganizationIds = ids.toString();
                 options.where = conq;
-                items = await User.findAll({...options, order: [['position_id', 'ASC']]});
+                items = await User.findAll({...options, order: [ [literal(`FIELD(\`Teams->UO\`.\`organization_id\`, ${orderOrganizationIds})`)], ['position_id', 'ASC']], subQuery: false });
             }
 
             return res.jsonSuccess({

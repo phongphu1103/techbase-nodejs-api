@@ -28,9 +28,7 @@ const app = express()
 app.use(cors())
     .use(compression())
     .use(express.json())
-    .use(express.urlencoded({
-        extended: true
-    }))
+    .use(express.urlencoded({ extended: true }))
     .use(SessionMiddleware)
     .use(SessionHandling)
     .use(LoggerTrackingHandling)
