@@ -9,7 +9,7 @@ import SessionConfig from "../configs/SessionConfig"
 
 
 // const MongoStore = connectMongo(session)
-const dbConnection = MariaDb.getConnect();
+const dbConnection = MariaDb.getConnection();
 // console.log(dbConnection)
 // const store = new SequelizeStore({
 //     db: dbConnection,

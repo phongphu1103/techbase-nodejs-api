@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 
 import MariaDb from '../databases/MariaDb';
 
-const dbConnection = MariaDb.getConnect();
+const dbConnection = MariaDb.getConnection();
 const Organization = dbConnection.define('SM', {
     id: {
         type: DataTypes.INTEGER,

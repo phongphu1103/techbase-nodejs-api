@@ -4,7 +4,7 @@ import MariaDb from '../databases/MariaDb';
 import Organization from './Organization';
 import User from './User';
 
-const dbConnection = MariaDb.getConnect();
+const dbConnection = MariaDb.getConnection();
 const UserOrganization = dbConnection.define('SM', {
     user_id: {
         type: DataTypes.INTEGER,

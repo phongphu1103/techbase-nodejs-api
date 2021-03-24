@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import MariaDb from '../databases/MariaDb';
 import Position from './Position';
 
-const dbConnection = MariaDb.getConnect();
+const dbConnection = MariaDb.getConnection();
 const User = dbConnection.define('SM', {
     id: {
         type: DataTypes.INTEGER,
