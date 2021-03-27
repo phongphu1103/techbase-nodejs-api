@@ -17,7 +17,7 @@ class MariaDB
         });
     }
 
-    getConnection() {
+    connect() {
         return this._connection;
     }
 }

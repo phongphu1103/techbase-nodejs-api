@@ -13,6 +13,5 @@ router.use('/api/v1/auth', AuthRoutes);
 router.use('/api/v1/organizations', AuthHandling, OrganizationRoutes);
 router.use('/api/v1/positions', AuthHandling, PositionRoutes);
 router.use('/api/v1/users', AuthHandling, UserRoutes);
-// router.use('/api/v1/users', UserRoutes);
 
 export default router;

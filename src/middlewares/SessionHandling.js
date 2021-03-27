@@ -1,5 +1,4 @@
 import session from "express-session";
-import SequelizeStore from 'connect-session-sequelize';
 // import connectMongo from "connect-mongo"
 
 // import MongoDb from "../databases/MongoDb"
@@ -7,13 +6,15 @@ import MariaDb from '../databases/MariaDb';
 import Session from "../utils/Session"
 import SessionConfig from "../configs/SessionConfig"
 
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 // const MongoStore = connectMongo(session)
-const dbConnection = MariaDb.getConnection();
-// console.log(dbConnection)
-// const store = new SequelizeStore({
-//     db: dbConnection,
-// })
+const db = MariaDb.connect();
+const store = new SequelizeStore({
+    db: db,
+});
+// make sure that Session tables are in place
+store.sync();
 
 const SessionMiddleware = session({
     secret: SessionConfig.SESSION_SECRET_KEY,
@@ -23,15 +24,14 @@ const SessionMiddleware = session({
     //     url: MongoDb.getUri(),
     //     mongoOptions: MongoDb.getOptions(),
     // }),
-
-    // store: store,
+    store: store,
     cookie: { maxAge: SessionConfig.SESSION_MAX_AGE },
-})
+});
 
 const SessionHandling = (req, res, next) => {
-    Session.instance(req.session)
-    next()
-}
+    Session.instance(req.session);
+    next();
+};
 
 
 export default SessionMiddleware
