@@ -1,11 +1,12 @@
 
-import { createLogger, format, transports } from "winston"
-import moment from "moment"
-import path from "path"
+import { createLogger, format, transports } from 'winston';
+import moment from 'moment';
+import path from 'path';
 
-import AppConfig from "../configs/AppConfig"
+import AppConfig from '../configs/AppConfig';
 
-const logPath = path.join(__dirname, `../../logs/${moment().format("YYYY/MM/DD")}`)
+const today = moment().format("YYYY/MM/DD")
+const logPath = path.join(__dirname, `../../logs/${today}`)
 
 const myFormat = format.json(({ level, message, label, timestamp }) => {
     return {
@@ -14,7 +15,7 @@ const myFormat = format.json(({ level, message, label, timestamp }) => {
         label,
         message
     }
-})
+});
 
 
 const logger = createLogger({
@@ -42,7 +43,6 @@ const logger = createLogger({
             filename: `${logPath}/combined.log`
         })
     ]
-})
+});
 
-
-export default logger
+export default logger;

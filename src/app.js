@@ -34,8 +34,6 @@ app.use(cors())
     .use(LoggerTrackingHandling)
     .use(ResponseHandling)
 
-
-
 // Define Routes
 app.use(Routes)
 

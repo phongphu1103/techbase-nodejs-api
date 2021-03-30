@@ -1,6 +1,6 @@
-import AppConfig from "../configs/AppConfig"
-import Logger from "../utils/Logger"
-import Moment from "../utils/Moment"
+import AppConfig from '../configs/AppConfig';
+import Moment from '../utils/Moment';
+import Logger from '../utils/Logger';
 
 /*
 |--------------------------------------------------------------------------
@@ -34,12 +34,12 @@ export default (req, res, next) => {
 			// Parse Response body
 			const { write, end } = res
 			const chunks = []
-		
+
 			res.write = function newWrite(chunk) {
 				chunks.push(chunk)
 				write.apply(res, arguments)
 			}
-		
+
 			res.end = function newEnd(chunk) {
 				if (chunk) { chunks.push(chunk) }
 				end.apply(res, arguments)
@@ -50,13 +50,13 @@ export default (req, res, next) => {
 					statusCode: res.statusCode,
 					statusMessage: res.statusMessage,
 				}
-				
+
 				try {
 					objLogger.message.response.body = JSON.parse(Buffer.concat(chunks).toString("utf8"))
 				} catch {
 					objLogger.message.response.body = Buffer.concat(chunks).toString("utf8")
 				}
-				
+
 				Logger.log(objLogger)
 			})
 		} else {
