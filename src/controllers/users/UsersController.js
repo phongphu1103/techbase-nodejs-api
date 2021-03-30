@@ -1,5 +1,5 @@
 import { isArray, isEmpty } from 'lodash';
-import { literal } from 'sequelize';
+import { literal, Op } from 'sequelize';
 
 import Organization from '../../models/Organization';
 import Position from '../../models/Position';
