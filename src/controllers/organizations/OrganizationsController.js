@@ -8,15 +8,15 @@ import Recursive from '../../utils/Recursive';
 
 class OrganizationsController {
     async get_index(req, res, next) {
-        try {
-            const pk = req.params.pk;
-            const params = req.query;
-            const fields = Organization.rawAttributes;
-            const limit = params.limit || 100;
-            const offset = params.offset || 0;
+        const pk = req.params.pk;
+        const params = req.query;
+        const limit = params.limit || 100;
+        const offset = params.offset || 0;
 
-            let conq = {};
-            let options = {
+        try {
+            const fields = Organization.rawAttributes;
+            let conq = {}, items,
+            options = {
                 attributes:  { exclude: ['created_user_id', 'created_date', 'updated_user_id', 'updated_date', 'deleted_user_id', 'deleted_date'] },
                 where: {},
                 include: [
@@ -34,7 +34,6 @@ class OrganizationsController {
                 limit: limit,
                 offset: offset
             };
-            let items;
 
             for(let key in fields){
                 if(params.hasOwnProperty(key) && !isEmpty(params[key])){
@@ -84,11 +83,11 @@ class OrganizationsController {
     }
 
     async post_index(req, res, next) {
-        try {
-            const params = req.body;
-            const fields = Organization.rawAttributes;
-            let data = {};
+        const params = req.body;
+        let data = {};
 
+        try {
+            const fields = Organization.rawAttributes;
             for(let key in fields){
                 if(params.hasOwnProperty(key)){
                     let value = params[key];
@@ -115,19 +114,19 @@ class OrganizationsController {
     }
 
     async put_index(req, res, next) {
+        const pk = !isNaN(req.params.pk) ? req.params.pk : null;
+        const params = req.body;
+        let data = {};
+
+        if(!pk){
+            return res.jsonError({
+                message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
+                record_id: pk
+            });
+        }
+
         try {
-            const pk = !isNaN(req.params.pk) ? req.params.pk : null;
-            const params = req.body;
             const fields = Organization.rawAttributes;
-            let data = {};
-
-            if(!pk){
-                return res.jsonError({
-                    message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
-                    record_id: pk
-                });
-            }
-
             for(let key in fields){
                 if(params.hasOwnProperty(key)){
                     let value = params[key];

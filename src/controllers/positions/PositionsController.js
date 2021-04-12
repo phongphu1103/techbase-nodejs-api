@@ -7,21 +7,20 @@ import ExceptionConfig from '../../configs/ExceptionConfig';
 class PositionsController
 {
     async get_index(req, res, next) {
-        try {
-            const pk = req.params.pk;
-            const params = req.query;
-            const fields = Position.rawAttributes;
-            const limit = params.limit || 100;
-            const offset = params.offset || 0;
+        const pk = req.params.pk;
+        const params = req.query;
+        const limit = params.limit || 100;
+        const offset = params.offset || 0;
 
-            let conq = {};
-            let options = {
+        try {
+            const fields = Position.rawAttributes;
+            let conq = {}, items,
+            options = {
                 attributes: ['id', 'name', 'code', 'status'],
                 where: {},
                 limit: limit,
                 offset: offset
             };
-            let items;
 
             for(let key in fields){
                 if(params.hasOwnProperty(key) && !isEmpty(params[key])){
@@ -53,11 +52,11 @@ class PositionsController
     }
 
     async post_index(req, res, next) {
-        try {
-            const params = req.body;
-            const fields = Position.rawAttributes;
-            let data = {};
+        const params = req.body;
+        let data = {};
 
+        try {
+            const fields = Position.rawAttributes;
             for(let key in fields){
                 if(params.hasOwnProperty(key)){
                     data[key] = params[key];
@@ -75,19 +74,19 @@ class PositionsController
     }
 
     async put_index(req, res, next) {
+        const pk = !isNaN(req.params.pk) ? req.params.pk : null;
+        const params = req.body;
+        let data = {};
+
+        if(!pk){
+            return res.jsonError({
+                message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
+                record_id: pk
+            })
+        }
+
         try {
-            const pk = !isNaN(req.params.pk) ? req.params.pk : null;
-            const params = req.body;
             const fields = Position.rawAttributes;
-            let data = {};
-
-            if(!pk){
-                return res.jsonError({
-                    message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
-                    record_id: pk
-                })
-            }
-
             for(let key in fields){
                 if(params.hasOwnProperty(key)){
                     data[key] = params[key];

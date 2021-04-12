@@ -30,7 +30,6 @@ export default (req, res, next) => {
 
 		// Tracking response data
 		if (AppConfig.LOGGER_ENABLE_TRACKING_RESPONSE) {
-			console.log("fukk", AppConfig)
 			// Parse Response body
 			const { write, end } = res
 			const chunks = []

@@ -5,7 +5,7 @@ import path from 'path';
 
 import AppConfig from '../configs/AppConfig';
 
-const today = moment().format("YYYY/MM/DD")
+const today = moment().format('YYYY/MM/DD')
 const logPath = path.join(__dirname, `../../logs/${today}`)
 
 const myFormat = format.json(({ level, message, label, timestamp }) => {

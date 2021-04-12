@@ -14,17 +14,17 @@ import Session from '../../utils/Session';
 class UsersController
 {
     async get_index(req, res, next) {
+        const pk = req.params.pk;
+        const params = req.query;
+        const limit = params.limit || 1500;
+        const offset = params.offset || 0;
+
         try {
             // const users = await UsersModel.findAll(/test api - 3/i)
             // const total = await users.count()
-            const pk = req.params.pk;
-            const params = req.query;
             const fields = User.rawAttributes;
-            const limit = params.limit || 1500;
-            const offset = params.offset || 0;
-
-            let conq = {};
-            let options = {
+            let conq = {}, items,
+            options = {
                 attributes:  { exclude: ['password', 'created_user_id', 'created_date', 'updated_user_id', 'updated_date', 'deleted_user_id', 'deleted_date'] },
                 where: {},
                 include: [
@@ -49,7 +49,6 @@ class UsersController
                 limit: limit,
                 offset: offset
             };
-            let items;
 
             for(let key in fields){
                 if(params.hasOwnProperty(key) && !isEmpty(params[key])){
@@ -96,11 +95,11 @@ class UsersController
     }
 
     async post_index(req, res, next) {
-        try {
-            const params = req.body;
-            const fields = User.rawAttributes;
-            let data = {};
+        const params = req.body;
+        let data = {};
 
+        try {
+            const fields = User.rawAttributes;
             for(let key in fields){
                 if(params.hasOwnProperty(key)){
                     let value = params[key];
@@ -138,19 +137,19 @@ class UsersController
     }
 
     async put_index(req, res, next) {
+        const pk = !isNaN(req.params.pk) ? req.params.pk : null;
+        const params = req.body;
+        let data = {};
+
+        if(!pk){
+            return res.jsonError({
+                message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
+                record_id: pk
+            })
+        }
+
         try {
-            const pk = !isNaN(req.params.pk) ? req.params.pk : null;
-            const params = req.body;
             const fields = User.rawAttributes;
-            let data = {};
-
-            if(!pk){
-                return res.jsonError({
-                    message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
-                    record_id: pk
-                })
-            }
-
             for(let key in fields){
                 if(params.hasOwnProperty(key)){
                     let value = params[key];
