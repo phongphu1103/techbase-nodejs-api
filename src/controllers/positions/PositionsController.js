@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 
 import Position from '../../models/Position';
 import ExceptionConfig from '../../configs/ExceptionConfig';
+import RedisClient from '../../databases/RedisClient';
 
 class PositionsController
 {

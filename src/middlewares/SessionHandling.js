@@ -1,38 +1,46 @@
-import session from "express-session";
-// import connectMongo from "connect-mongo"
-
-// import MongoDb from "../databases/MongoDb"
+import session from 'express-session';
+import connectMongo from 'connect-mongo'
+import connectRedis from 'connect-redis';
+import connectSessionSequelize from 'connect-session-sequelize';
+// import MongoDb from '../databases/MongoDb'
 import MariaDb from '../databases/MariaDb';
-import Session from "../utils/Session"
-import SessionConfig from "../configs/SessionConfig"
+import RedisClient from '../databases/RedisClient';
+import Session from '../utils/Session';
+import SessionConfig from '../configs/SessionConfig';
 
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const SequelizeStore = connectSessionSequelize(session.Store);
+const RedisStore = connectRedis(session)
+const MongoStore = connectMongo(session)
 
-// const MongoStore = connectMongo(session)
 const db = MariaDb.connect();
-const store = new SequelizeStore({
+const sequelizeStore = new SequelizeStore({
     db: db,
 });
 // make sure that Session tables are in place
-store.sync();
+sequelizeStore.sync();
+
+const redisStore = new RedisStore({
+    client: RedisClient,
+    ttl: 86400
+})
 
 const SessionMiddleware = session({
     secret: SessionConfig.SESSION_SECRET_KEY,
+    cookie: { maxAge: SessionConfig.SESSION_MAX_AGE },
     saveUninitialized: false, // don't create session until something stored
     resave: false, //don't save session if unmodified
     // store: new MongoStore({
     //     url: MongoDb.getUri(),
     //     mongoOptions: MongoDb.getOptions(),
     // }),
-    store: store,
-    cookie: { maxAge: SessionConfig.SESSION_MAX_AGE },
+    // store: sequelizeStore
+    store: redisStore
 });
 
 const SessionHandling = (req, res, next) => {
     Session.instance(req.session);
     next();
 };
-
 
 export default SessionMiddleware
 export {

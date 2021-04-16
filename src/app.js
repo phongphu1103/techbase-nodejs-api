@@ -1,9 +1,10 @@
 // Define Dependencies
-import express from "express"
-// import socketIO from "socket.io"
-// import http from "http"
-import cors from "cors"
-import compression from "compression"
+import express from 'express'
+// import socketIO from 'socket.io'
+// import http from 'http'
+import cors from 'cors'
+import compression from 'compression'
+import passport from 'passport'
 // import morgan from "morgan"
 
 import AppConfig from "./configs/AppConfig"
@@ -13,14 +14,12 @@ import ErrorHandling from "./middlewares/ErrorHandling"
 import LoggerTrackingHandling from "./middlewares/LoggerTrackingHandling"
 import ResponseHandling from "./middlewares/ResponseHandling"
 import SessionMiddleware, { SessionHandling } from "./middlewares/SessionHandling"
-// import ValidatorHandling from "./middlewares/ValidatorHandling"
-
 // Import file routes config
 import Routes from "./routes/Routes"
+const local = require('./strategies/local');
 
 // Create Express App
 const app = express()
-
 
 // Define Middlewares
 // if (process.env.NODE_ENV !== "test") app.use(morgan("combined"))
@@ -33,6 +32,9 @@ app.use(cors())
     .use(SessionHandling)
     .use(LoggerTrackingHandling)
     .use(ResponseHandling)
+    // passport middleware
+    .use(passport.initialize())
+    .use(passport.session())
 
 // Define Routes
 app.use(Routes)

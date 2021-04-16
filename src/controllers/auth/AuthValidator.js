@@ -1,5 +1,5 @@
-import { check } from "express-validator"
-import ExceptionConfig from "../../configs/ExceptionConfig"
+import { check } from 'express-validator';
+import ExceptionConfig from '../../configs/ExceptionConfig';
 
 const AuthValidator = {
 
@@ -10,21 +10,21 @@ const AuthValidator = {
     |--------------------------------------------------------------------------
     */
 	postLogin: [
-        check("email")
+        check('email')
             .exists().withMessage(ExceptionConfig.VALIDATION.REQUIRE_FIELD)
             .isEmail().withMessage(ExceptionConfig.VALIDATION.INVALID_EMAIL),
-        check("password")
+        check('password')
             .exists().withMessage(ExceptionConfig.VALIDATION.REQUIRE_FIELD)
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Routes /api/v1/auth/refreshToken
+    | Routes /api/v1/auth/refresh_token
     | Method: POST
     |--------------------------------------------------------------------------
     */
     postRefreshToken: [
-        check("refreshToken")
+        check('token')
             .exists().withMessage(ExceptionConfig.VALIDATION.REQUIRE_FIELD),
     ]
 }

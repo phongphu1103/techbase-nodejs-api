@@ -9,7 +9,6 @@ import UsersModel from '../../models/UsersModel';
 import ExceptionConfig from '../../configs/ExceptionConfig';
 import HashPassword from '../../utils/HashPassword';
 import Recursive from '../../utils/Recursive';
-import Session from '../../utils/Session';
 
 class UsersController
 {
@@ -89,7 +88,7 @@ class UsersController
                 data: items,
                 total: pk ? (items ? 1 : 0) : items.length
             });
-        } catch (err) {
+        } catch(err) {
             next(err)
         }
     }
@@ -131,7 +130,7 @@ class UsersController
                 message: ExceptionConfig.COMMON.ITEM_CREATE_SUCCESS,
                 record_id: item.id
             })
-        } catch (err) {
+        } catch(err) {
             next(err)
         }
     }
@@ -202,7 +201,7 @@ class UsersController
                 message: ExceptionConfig.COMMON.ITEM_DELETE_SUCCESS,
                 data: id
             })
-        } catch (err) {
+        } catch(err) {
             next(err)
         }
     }
@@ -213,7 +212,7 @@ class UsersController
                 message: "You requested detail users controller",
                 errors: "You requested detail users controller"
             })
-        } catch (err) {
+        } catch(err) {
             next(err)
         }
     }

@@ -17,3 +17,10 @@ Test API voi unit test
 Buoc 1: Import db techabse tu thu muc dump
 Buoc 2: set bien AUTH_ENABLE=false trong file .env.development
 Buoc 3: su dung command line de run npm test
+
+Config Redis
+- Open file redis.conf
+- Allow client remote to redis server: bind 0.0.0.0
+- Set auth password: requirepass password
+- Using redis-cli to remote with command: rdcli -h redis-server-ip -a requirepass -p 6379
+- Using keys '*' to get all keys
