@@ -1,7 +1,9 @@
 import redis from 'redis';
+import bluebird from 'bluebird';
 
 import RedisConfig from '../configs/RedisConfig';
 
+bluebird.promisifyAll(redis);
 const RedisClient = redis.createClient({
     host: RedisConfig.RD_HOST,
     port: RedisConfig.RD_PORT,

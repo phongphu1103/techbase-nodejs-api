@@ -1,6 +1,5 @@
 class Session {
-    constructor() {
-    }
+    constructor() {}
 
     instance(session) {
         this.session = session
@@ -8,12 +7,12 @@ class Session {
 
     get(key, value) {
         const _session = {...this.session}
-        delete _session["cookie"]
-        if (!key || key === "undefined") {
+        delete _session['cookie']
+        if (!key || key === 'undefined') {
             return _session
         }
-        
-        if (!_session[key] || _session[key] === "undefined") {
+
+        if (!_session[key] || _session[key] === 'undefined') {
             return value || null
         }
         return _session[key]

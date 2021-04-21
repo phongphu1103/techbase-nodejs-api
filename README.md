@@ -24,3 +24,4 @@ Config Redis
 - Set auth password: requirepass password
 - Using redis-cli to remote with command: rdcli -h redis-server-ip -a requirepass -p 6379
 - Using keys '*' to get all keys
+- Using hgetall 'key' to query

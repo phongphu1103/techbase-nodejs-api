@@ -1,20 +1,19 @@
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken';
 
-import AuthConfig from "../../configs/AuthConfig"
+import AuthConfig from '../../configs/AuthConfig';
 
 class Authentication {
-    constructor() {
-    }
+    constructor() {}
 
+    // create a jwt token containing the user info that expires in 15 minutes
     getToken(payload) {
-        console.log(AuthConfig)
         const options = {
             expiresIn: AuthConfig.TOKEN_LIFE
         }
         return jwt.sign(payload || {}, AuthConfig.TOKEN_SECRET_KEY, options)
     }
 
-    getRefreshToken(payload ) {
+    getRefreshToken(payload) {
         const options = {
             expiresIn: AuthConfig.REFRESH_TOKEN_LIFE
         }
