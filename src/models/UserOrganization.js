@@ -1,11 +1,10 @@
 import { DataTypes, QueryTypes } from 'sequelize';
 
-import MariaDb from '../databases/MariaDb';
+import BaseModel from '../utils/core/BaseModel';
 import Organization from './Organization';
 import User from './User';
 
-const dbConnection = MariaDb.connect();
-const UserOrganization = dbConnection.define('SM', {
+const schema = {
     user_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -14,9 +13,9 @@ const UserOrganization = dbConnection.define('SM', {
         type: DataTypes.INTEGER,
         primaryKey: true,
     }
-}, {
-    tableName: 'user_organization'
-});
+};
+
+const UserOrganization = BaseModel('user_organization', schema, false);
 
 UserOrganization.delete = async function(params){
     const sql = 'DELETE FROM `user_organization` WHERE `user_id`=:user_id';

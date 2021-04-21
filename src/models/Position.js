@@ -1,9 +1,8 @@
 import { DataTypes } from 'sequelize';
 
-import MariaDb from '../databases/MariaDb';
+import BaseModel from '../utils/core/BaseModel';
 
-const dbConnection = MariaDb.connect();
-const Position = dbConnection.define('SM', {
+const schema = {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -11,15 +10,9 @@ const Position = dbConnection.define('SM', {
     },
     name: DataTypes.STRING,
     code: DataTypes.STRING,
-    status: DataTypes.STRING,
-    created_user_id: DataTypes.INTEGER,
-    created_date: DataTypes.DATE,
-    updated_user_id: DataTypes.INTEGER,
-    updated_date: DataTypes.DATE,
-    deleted_user_id: DataTypes.INTEGER,
-    deleted_date: DataTypes.DATE
-}, {
-    tableName: 'positions'
-});
+    status: DataTypes.STRING
+};
+
+const Position = BaseModel('positions', schema, true);
 
 export default Position;

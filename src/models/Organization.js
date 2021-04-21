@@ -1,9 +1,8 @@
 import { DataTypes } from 'sequelize';
 
-import MariaDb from '../databases/MariaDb';
+import BaseModel from '../utils/core/BaseModel';
 
-const dbConnection = MariaDb.connect();
-const Organization = dbConnection.define('SM', {
+const schema = {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -13,15 +12,9 @@ const Organization = dbConnection.define('SM', {
     code: DataTypes.STRING,
     parent_id: DataTypes.INTEGER,
     level: DataTypes.TINYINT,
-    status: DataTypes.STRING,
-    created_user_id: DataTypes.INTEGER,
-    created_date: DataTypes.DATE,
-    updated_user_id: DataTypes.INTEGER,
-    updated_date: DataTypes.DATE,
-    deleted_user_id: DataTypes.INTEGER,
-    deleted_date: DataTypes.DATE
-}, {
-    tableName: 'organizations'
-});
+    status: DataTypes.STRING
+};
+
+const Organization = BaseModel('organizations', schema, true);
 
 export default Organization;
