@@ -65,7 +65,7 @@ class AuthController {
 
     get_logout(req, res, next) {
         try{
-            req.logout()
+            req.logout();
             return res.jsonSuccess({
                 message: ExceptionConfig.COMMON.REQUEST_SUCCESS
             });

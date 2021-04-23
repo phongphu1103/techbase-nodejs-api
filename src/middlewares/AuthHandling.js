@@ -9,7 +9,7 @@ export default (req, res, next) => {
 
     const token = req.headers["x-access-token"];
     console.log(token)
-    // token && Session.get("token")
+    // token && req.session
     if (token) {
         // verifies secret and checks exp
         if (Authentication.verifyToken(token)) {
