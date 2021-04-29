@@ -39,7 +39,19 @@ class PositionsController
                 items = await Position.findOne(options);
             }else{
                 options.where = conq;
-                items = await Position.findAll(options);
+                // calculate cache key
+                try{
+                    const client = RedisClient;
+                    let cache = await client.hgetAsync('pos', 'positions');
+                    items = cache ? JSON.parse(cache) : [];
+                    // if cache not found, making query
+                    if(!items.length){
+                        items = await Position.findAll(options);
+                        await client.hset('pos', 'positions', JSON.stringify(items));
+                    }
+                } catch(e) {
+                    items = await Position.findAll(options);
+                }
             }
 
             return res.jsonSuccess({
