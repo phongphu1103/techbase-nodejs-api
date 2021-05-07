@@ -1,5 +1,11 @@
 
 const ExceptionConfig = {
+    CODE: {
+        CREATED                 : 201,
+        NO_CONTENT              : 204,
+        BAD_REQUEST             : 400,
+    },
+
 	COMMON: {
         REQUEST_SUCCESS         : "The request has succeeded",
         ITEM_CREATE_SUCCESS     : "The item was created successfully",

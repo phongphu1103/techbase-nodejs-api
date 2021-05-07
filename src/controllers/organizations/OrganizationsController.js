@@ -105,6 +105,7 @@ class OrganizationsController {
             const item = await Organization.build(data).save();
 
             return res.jsonSuccess({
+                code: ExceptionConfig.CODE.CREATED,
                 message: ExceptionConfig.COMMON.ITEM_CREATE_SUCCESS,
                 record_id: item.id
             });
@@ -120,6 +121,7 @@ class OrganizationsController {
 
         if(!pk){
             return res.jsonError({
+                code: ExceptionConfig.CODE.BAD_REQUEST,
                 message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
                 record_id: pk
             });

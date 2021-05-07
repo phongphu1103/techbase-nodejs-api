@@ -127,6 +127,7 @@ class UsersController
             }
 
             return res.jsonSuccess({
+                code: ExceptionConfig.CODE.CREATED,
                 message: ExceptionConfig.COMMON.ITEM_CREATE_SUCCESS,
                 record_id: item.id
             })
@@ -142,6 +143,7 @@ class UsersController
 
         if(!pk){
             return res.jsonError({
+                code: ExceptionConfig.CODE.BAD_REQUEST,
                 message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
                 record_id: pk
             })
