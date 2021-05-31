@@ -114,6 +114,7 @@ class PositionsController
 
             if(!(item instanceof Position)){
                 return res.jsonError({
+                    code: ExceptionConfig.CODE.ACCEPT,
                     message: ExceptionConfig.COMMON.ITEM_NOT_FOUND,
                     record_id: pk
                 });
