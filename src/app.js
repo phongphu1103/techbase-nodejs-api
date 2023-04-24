@@ -26,7 +26,8 @@ const app = express()
 
 app.use(cors())
     .use(compression())
-    .use(express.json())
+    .use(express.json()) // for parsing application/json
+    // .use(cookieParser()) //cookie-parser for reading cookies from request
     .use(express.urlencoded({ extended: true }))
     .use(SessionMiddleware)
     .use(SessionHandling)
