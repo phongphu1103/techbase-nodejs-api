@@ -28,11 +28,10 @@ class MongoDb {
         return uri
     }
 
-
     async connectDb() {
         try {
             await mongoose.connect(this.getUri(), this.getOptions())
-            if( process.env.NODE_ENV !== "test") console.log("|>>>>>>>>>>>>>>>>>>>>>>> Connect Mongo Database Successfully")
+            if (process.env.NODE_ENV !== "test") console.log("|>>>>>>>>>>>>>>>>>>>>>>> Connect Mongo Database Successfully")
         } catch (error) {
             Logger.log({
                 level: "error",
@@ -42,7 +41,7 @@ class MongoDb {
                     error: error
                 }
             })
-            if( process.env.NODE_ENV !== "test") console.log("|>>>>>>>>>>>>>>>>>>>>>>> Cannot Connect Mongo Database")
+            if ( process.env.NODE_ENV !== "test") console.log("|>>>>>>>>>>>>>>>>>>>>>>> Cannot Connect Mongo Database")
         }
     }
 }

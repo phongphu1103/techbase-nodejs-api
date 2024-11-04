@@ -5,7 +5,8 @@ import Session from '../utils/Session'
 
 export default (req, res, next) => {
     // Skip authentication
-    if (AuthConfig.AUTH_ENABLE === false) return next();
+    if (AuthConfig.AUTH_ENABLE === false)
+        return next() // pass control to the next handler
 
     const token = req.headers['x-access-token'];
     console.log(token)
@@ -13,17 +14,18 @@ export default (req, res, next) => {
     if (token) {
         // verifies secret and checks exp
         if (Authentication.verifyToken(token)) {
-            next();
-        } else {
-            res.jsonError({
-                code: 401,
-                message: ExceptionConfig.AUTH.UNAUTHORIZED
-            });
+            return next()
         }
-    } else {
-        res.jsonError({
-            code: 403,
-            message: ExceptionConfig.AUTH.MISSING_TOKEN
-        });
+
+        return res.jsonError({
+            code: 401,
+            message: ExceptionConfig.AUTH.UNAUTHORIZED
+        })
     }
+
+    return res.jsonError({
+        code: 403,
+        message: ExceptionConfig.AUTH.MISSING_TOKEN
+    })
+    
 }
