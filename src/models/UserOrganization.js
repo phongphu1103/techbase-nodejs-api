@@ -1,6 +1,6 @@
 import { DataTypes, QueryTypes } from 'sequelize';
 
-import BaseModel from '../utils/core/BaseModel';
+import BaseModel from './BaseModel';
 import Organization from './Organization';
 import User from './User';
 

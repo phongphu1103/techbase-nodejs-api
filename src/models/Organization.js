@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 
-import BaseModel from '../utils/core/BaseModel';
+import BaseModel from './BaseModel';
 
 const schema = {
     id: {
