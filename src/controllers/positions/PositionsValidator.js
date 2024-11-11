@@ -16,7 +16,7 @@ const PositionsValidator = {
         check('code').not().isEmpty().withMessage(ExceptionConfig.VALIDATION.REQUIRE_FIELD)
                     .custom(value => {
                         return Position.findOne({ attributes: ['id'], where: { code: value } }).then(item => {
-                            if(item){
+                            if (item) {
                                 return Promise.reject(`Code ${value} already in use`);
                             }
                         });
@@ -37,7 +37,7 @@ const PositionsValidator = {
                     .custom((value, { req }) => {
                         const pk = req.params.pk;
                         return Position.findOne({ attributes: ['id'], where: { code: value } }).then(item => {
-                            if(item && item.id != pk){
+                            if (item && item.id != pk) {
                                 return Promise.reject(`Code ${value} already in use`);
                             }
                         });

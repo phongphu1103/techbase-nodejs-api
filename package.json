@@ -12,7 +12,12 @@
     "test": "mocha -r esm \"tests/api\"",
     "test:api": "mocha -r esm \"tests/api\"",
     "test:socket": "mocha -r esm \"tests/socket\"",
-    "test:feature": "mocha -r esm \"tests/features\""
+    "test:feature": "mocha -r esm \"tests/features\"",
+    "migrate": "npx sequelize-cli db:migrate",
+    "make:migration": "npx sequelize-cli migration:generate",
+    "make:seed": "npx sequelize-cli seed:generate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "migrate:undo:all": "npx sequelize-cli db:migrate:undo:all"
   },
   "author": "",
   "license": "ISC",
@@ -36,6 +41,7 @@
     "moment-timezone": "^0.5.46",
     "mongoose": "^5.6.8",
     "morgan": "^1.9.1",
+    "multer": "^1.4.5-lts.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "redis": "^3.1.1",
@@ -47,6 +53,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "mocha": "^6.2.0"
+    "mocha": "^6.2.0",
+    "sequelize-cli": "^6.6.2"
   }
 }

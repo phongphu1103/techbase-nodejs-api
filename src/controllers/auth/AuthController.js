@@ -1,8 +1,9 @@
+import Controller from '../Controller';
 import ExceptionConfig from '../../configs/ExceptionConfig'
 import Authentication from '../../utils/auth/Authentication'
 import Session from '../../utils/Session'
 
-class AuthController {
+class AuthController extends Controller {
     async post_login (req, res, next) {
         try {
             const user = req.user;
@@ -21,6 +22,7 @@ class AuthController {
             return res.jsonSuccess({
                 message: ExceptionConfig.COMMON.REQUEST_SUCCESS,
                 data: {
+                    user: user,
                     token: token,
                     refresh_token: refresh_token
                 }

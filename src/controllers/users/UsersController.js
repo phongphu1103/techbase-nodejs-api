@@ -60,10 +60,10 @@ class UsersController
                 }
             }
 
-            if(pk){
+            if (pk) {
                 options.where = {...conq, id: pk};
                 items = await User.findOne(options);
-            }else{
+            } else {
                 // get all organizations
                 let organizations = await Organization.findAll({
                     attributes: ['id', 'parent_id', 'level'],
@@ -150,7 +150,7 @@ class UsersController
         }
 
         try {
-            const fields = User.rawAttributes;
+            const fields = User.getAttributes();
             for(let key in fields){
                 if(params.hasOwnProperty(key)){
                     let value = params[key];

@@ -1,12 +1,17 @@
 import { isArray, isEmpty } from 'lodash';
 import { Op } from 'sequelize';
 
-import Position from '../../models/Position';
+import Controller from '../Controller';
+import CustomError from '../../utils/CustomError';
 import ExceptionConfig from '../../configs/ExceptionConfig';
+import Position from '../../models/Position';
 import RedisClient from '../../databases/RedisClient';
 
-class PositionsController
-{
+class PositionsController extends Controller {
+    constructor() {
+        super()
+    }
+    
     async get_index(req, res, next) {
         const pk = req.params.pk;
         const params = req.query;
@@ -14,7 +19,7 @@ class PositionsController
         const offset = params.offset || 0;
 
         try {
-            const fields = Position.rawAttributes;
+            const fields = Position.getAttributes();
             let conq = {}, items,
             options = {
                 attributes: ['id', 'name', 'code', 'status'],
@@ -23,29 +28,29 @@ class PositionsController
                 offset: offset
             };
 
-            for(let key in fields){
-                if(params.hasOwnProperty(key) && !isEmpty(params[key])){
+            for (let key in fields) {
+                if (params.hasOwnProperty(key) && !isEmpty(params[key])) {
                     let value = params[key];
-                    if(isArray(value)){
+                    if (isArray(value)) {
                         conq[key] = { [Op.in]:value };
-                    }else{
+                    } else {
                         conq[key] = value;
                     }
                 }
             }
 
-            if(pk){
+            if (pk) {
                 options.where = {...conq, id: pk};
                 items = await Position.findOne(options);
-            }else{
+            } else {
                 options.where = conq;
                 // calculate cache key
-                try{
+                try {
                     const client = RedisClient;
                     let cache = await client.hgetAsync('pos', 'positions');
                     items = cache ? JSON.parse(cache) : [];
                     // if cache not found, making query
-                    if(!items.length){
+                    if (!items.length) {
                         items = await Position.findAll(options);
                         await client.hset('pos', 'positions', JSON.stringify(items));
                     }
@@ -64,71 +69,56 @@ class PositionsController
         }
     }
 
-    async post_index(req, res, next) {
+    async storeExecute (req) {
         const params = req.body;
         let data = {};
 
-        try {
-            const fields = Position.rawAttributes;
-            for(let key in fields){
-                if(params.hasOwnProperty(key)){
-                    data[key] = params[key];
-                }
+        const fields = Position.getAttributes();
+        for (let key in fields) {
+            if(params.hasOwnProperty(key)){
+                data[key] = params[key];
             }
-            const item = await Position.build(data).save();
-
-            return res.jsonSuccess({
-                code: ExceptionConfig.CODE.CREATED,
-                message: ExceptionConfig.COMMON.ITEM_CREATE_SUCCESS,
-                record_id: item.id
-            });
-        } catch(err) {
-            next(err);
         }
+
+        const item = await Position.build(data).save();
+
+        return {
+            code: ExceptionConfig.CODE.CREATED,
+            message: ExceptionConfig.COMMON.ITEM_CREATE_SUCCESS,
+            record_id: item.id
+        };
     }
 
-    async put_index(req, res, next) {
+    async updateExecute(req) {
         const pk = !isNaN(req.params.pk) ? req.params.pk : null;
         const params = req.body;
         let data = {};
 
-        if(!pk){
-            return res.jsonError({
-                code: ExceptionConfig.CODE.BAD_REQUEST,
-                message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
-                record_id: pk
-            })
+        if (!pk) {
+            throw new CustomError(ExceptionConfig.COMMON.MISSING_PRIMARY_KEY, ExceptionConfig.CODE.BAD_REQUEST)
         }
 
-        try {
-            const fields = Position.rawAttributes;
-            for(let key in fields){
-                if(params.hasOwnProperty(key)){
-                    data[key] = params[key];
-                }
+        const fields = Position.getAttributes();
+        for (let key in fields) {
+            if (params.hasOwnProperty(key)) {
+                data[key] = params[key];
             }
-
-            const item = await Position.findByPk(pk, {
-                attributes: { exclude: ['created_user_id', 'created_date', 'updated_user_id', 'updated_date', 'deleted_user_id', 'deleted_date'] }
-            });
-
-            if(!(item instanceof Position)){
-                return res.jsonError({
-                    code: ExceptionConfig.CODE.ACCEPT,
-                    message: ExceptionConfig.COMMON.ITEM_NOT_FOUND,
-                    record_id: pk
-                });
-            }
-
-            await item.set(data).save();
-
-            return res.jsonSuccess({
-                message: ExceptionConfig.COMMON.ITEM_UPDATE_SUCCESS,
-                record_id: item.id
-            });
-        } catch(err) {
-            next(err)
         }
+
+        const item = await Position.findByPk(pk, {
+            attributes: { exclude: ['created_user_id', 'created_date', 'updated_user_id', 'updated_date', 'deleted_user_id', 'deleted_date'] }
+        });
+
+        if (!(item instanceof Position)) {
+            throw new CustomError(ExceptionConfig.COMMON.ITEM_NOT_FOUND, ExceptionConfig.CODE.NOT_FOUND)
+        }
+
+        await item.set(data).save();
+
+        return {
+            message: ExceptionConfig.COMMON.ITEM_UPDATE_SUCCESS,
+            record_id: item.id
+        };
     }
 }
 

@@ -34,7 +34,7 @@ const OrganizationsValidator = {
                     .custom((value, { req }) => {
                         const pk = req.params.pk;
                         return Organization.findOne({ attributes: ['id'], where: { code: value } }).then(item => {
-                            if(item && item.id != pk){
+                            if (item && item.id != pk) {
                                 return Promise.reject(`Code ${value} already in use`);
                             }
                         });

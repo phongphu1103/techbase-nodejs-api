@@ -9,7 +9,6 @@ export default (req, res, next) => {
         return next() // pass control to the next handler
 
     const token = req.headers['x-access-token'];
-    console.log(token)
     // token && req.session
     if (token) {
         // verifies secret and checks exp

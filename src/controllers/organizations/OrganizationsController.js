@@ -14,7 +14,7 @@ class OrganizationsController {
         const offset = params.offset || 0;
 
         try {
-            const fields = Organization.rawAttributes;
+            const fields = Organization.getAttributes();
             let conq = {}, items,
             options = {
                 attributes:  { exclude: ['created_user_id', 'created_date', 'updated_user_id', 'updated_date', 'deleted_user_id', 'deleted_date'] },
@@ -35,21 +35,21 @@ class OrganizationsController {
                 offset: offset
             };
 
-            for(let key in fields){
-                if(params.hasOwnProperty(key) && !isEmpty(params[key])){
+            for (let key in fields) {
+                if (params.hasOwnProperty(key) && !isEmpty(params[key])) {
                     let value = params[key];
-                    if(isArray(value)){
+                    if (isArray(value)) {
                         conq[key] = { [Op.in]:value };
-                    }else{
+                    } else {
                         conq[key] = value;
                     }
                 }
             }
 
-            if(pk){
+            if (pk) {
                 options.where = {...conq, id: pk};
                 items = await Organization.findOne(options);
-            }else{
+            } else {
                 options.where = conq;
                 let results = await Organization.findAll({
                     ...options,
@@ -61,11 +61,11 @@ class OrganizationsController {
                 let ids = [];
                 Recursive.reorder(results, 0, ids);
                 items = [];
-                for(let i in ids){
+                for (let i in ids) {
                     let id = ids[i];
-                    for(let j in results){
+                    for (let j in results) {
                         let item = results[j];
-                        if(item.id == id){
+                        if (item.id == id) {
                             items.push(item);
                         }
                     }
@@ -87,9 +87,9 @@ class OrganizationsController {
         let data = {};
 
         try {
-            const fields = Organization.rawAttributes;
-            for(let key in fields){
-                if(params.hasOwnProperty(key)){
+            const fields = Organization.getAttributes();
+            for (let key in fields) {
+                if (params.hasOwnProperty(key)) {
                     let value = params[key];
                     (key == 'parent_id') && (value || (value = 0));
                     data[key] = value;
@@ -98,7 +98,7 @@ class OrganizationsController {
 
             data['level'] = 1;
             const parent = await Organization.findOne({ attributes: ['id', 'level'], where: { 'id': params.parent_id } });
-            if(parent){
+            if (parent) {
                 data['level'] = +parent.level + 1;
             }
 
@@ -119,7 +119,7 @@ class OrganizationsController {
         const params = req.body;
         let data = {};
 
-        if(!pk){
+        if (!pk) {
             return res.jsonError({
                 code: ExceptionConfig.CODE.BAD_REQUEST,
                 message: ExceptionConfig.COMMON.MISSING_PRIMARY_KEY,
@@ -128,9 +128,9 @@ class OrganizationsController {
         }
 
         try {
-            const fields = Organization.rawAttributes;
-            for(let key in fields){
-                if(params.hasOwnProperty(key)){
+            const fields = Organization.getAttributes();
+            for (let key in fields) {
+                if (params.hasOwnProperty(key)) {
                     let value = params[key];
                     (key == 'parent_id') && (value || (value = 0));
                     data[key] = value;
@@ -139,7 +139,7 @@ class OrganizationsController {
 
             data['level'] = 1;
             const parent = await Organization.findOne({ attributes: ['id', 'level'], where: { 'id': params.parent_id } });
-            if(parent){
+            if (parent) {
                 data['level'] = +parent.level + 1;
             }
 
@@ -147,7 +147,7 @@ class OrganizationsController {
                 attributes: { exclude: ['created_user_id', 'created_date', 'updated_user_id', 'updated_date', 'deleted_user_id', 'deleted_date'] }
             });
 
-            if(!(item instanceof Organization)){
+            if (!(item instanceof Organization)) {
                 return res.jsonError({
                     message: ExceptionConfig.COMMON.ITEM_NOT_FOUND,
                     record_id: pk
