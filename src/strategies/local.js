@@ -22,7 +22,7 @@ passport.deserializeUser(async (id, done) => {
 
 passport.use(new LocalStrategy({ usernameField: 'email' },
     async (email, password, done) => {
-        try{
+        try {
             const user = await User.findOne({
                 attributes: ['id', 'username', 'email', 'password'],
                 where: {
@@ -31,7 +31,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' },
                 }
             });
 
-            if(!(user instanceof User) || !HashPassword.compareHash(password, user.password)){
+            if (!(user instanceof User) || !HashPassword.compareHash(password, user.password)) {
                 return done(null, false)
             }
 

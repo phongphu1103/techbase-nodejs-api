@@ -28,7 +28,7 @@ const ValidatorHandling = validations => {
         }
 
         return res.jsonError({
-            code: 400,
+            code: 422,
             message: ExceptionConfig.COMMON.VALIDATION_ERROR,
             errors: errors.mapped()
         })

@@ -1,4 +1,4 @@
-export default ( req, res, next) => {
+export default (req, res, next) => {
     // Define response format incase success
     res.jsonSuccess = ({...args}) => {
         let response = {

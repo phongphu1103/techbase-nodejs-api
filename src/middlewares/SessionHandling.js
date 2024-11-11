@@ -4,7 +4,7 @@ import connectRedis from 'connect-redis';
 import connectSessionSequelize from 'connect-session-sequelize';
 // import MongoDb from '../databases/MongoDb'
 import MariaDb from '../databases/MariaDb';
-import RedisClient from '../databases/RedisClient';
+import RedisClient, { isRedisAvailable } from '../databases/RedisClient';
 import Session from '../utils/Session';
 import SessionConfig from '../configs/SessionConfig';
 
@@ -12,9 +12,9 @@ const SequelizeStore = connectSessionSequelize(session.Store);
 const RedisStore = connectRedis(session)
 const MongoStore = connectMongo(session)
 
-const db = MariaDb.connect();
+const sequelize = MariaDb.getConnection();
 const sequelizeStore = new SequelizeStore({
-    db: db,
+    db: sequelize,
 });
 // make sure that Session tables are in place
 sequelizeStore.sync();
@@ -33,8 +33,7 @@ const SessionMiddleware = session({
     //     url: MongoDb.getUri(),
     //     mongoOptions: MongoDb.getOptions(),
     // }),
-    // store: sequelizeStore
-    store: redisStore
+    store: isRedisAvailable() ? redisStore : sequelizeStore
 });
 
 const SessionHandling = (req, res, next) => {

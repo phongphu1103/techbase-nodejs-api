@@ -20,14 +20,14 @@ export default (err, req, res, next) => {
 
     // Response data
     if (process.env.NODE_ENV === "production") {
-        res.jsonError({
+        return res.jsonError({
             code: 500,
             message: ExceptionConfig.COMMON.INTERNAL_ERROR
         })
     }
 
-    res.jsonError({
-        code: 500,
+    return res.jsonError({
+        code: err.statusCode,
         message: err.message.toString(),
         errors: err.stack.toString()
     })
