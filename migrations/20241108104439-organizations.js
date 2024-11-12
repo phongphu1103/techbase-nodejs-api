@@ -14,7 +14,7 @@ module.exports = {
     await queryInterface.createTable('organizations', {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       name: { type: DataTypes.STRING, varchar: 100 },
-      code: { type: DataTypes.STRING, varchar: 50 },
+      code: { type: DataTypes.STRING, varchar: 50, unique: true },
       parent_id: { type: DataTypes.INTEGER, defaultValue: 0, unsigned: true },
       level: { type: DataTypes.INTEGER, defaultValue: 0, smallint: true, unsigned: true },
       status: { type: DataTypes.STRING, defaultValue: 'active', enum: ['active', 'delete'] },
