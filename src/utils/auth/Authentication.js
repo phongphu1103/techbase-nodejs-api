@@ -8,6 +8,7 @@ class Authentication {
     // create a jwt token containing the user info that expires in 15 minutes
     getToken(payload) {
         const options = {
+            algorithm: 'HS256',
             expiresIn: AuthConfig.TOKEN_LIFE
         }
         return jwt.sign(payload || {}, AuthConfig.TOKEN_SECRET_KEY, options)
@@ -23,7 +24,7 @@ class Authentication {
     verifyToken(token) {
         try {
             return jwt.verify(token, AuthConfig.TOKEN_SECRET_KEY)
-        } catch {
+        } catch (err) {
             return false
         }
     }
