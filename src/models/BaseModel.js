@@ -3,19 +3,59 @@ import { DataTypes } from 'sequelize';
 import MariaDB from '../databases/MariaDb';
 
 const timestampSchema = {
-    created_user_id: DataTypes.INTEGER,
-    created_date: DataTypes.DATE,
-    updated_user_id: DataTypes.INTEGER,
-    updated_date: DataTypes.DATE,
-    deleted_user_id: DataTypes.INTEGER,
-    deleted_date: DataTypes.DATE
-};
+    createdBy: {
+        type: DataTypes.INTEGER,
+        field: 'created_by',
+        allowNull: true
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at',
+        defaultValue: DataTypes.NOW,
+        allowNull: true
+    },
+    updatedBy: {
+        type: DataTypes.INTEGER,
+        field: 'updated_by',
+        allowNull: true
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at',
+        defaultValue: DataTypes.NOW,
+        allowNull: true
+    },
+}
+
+const softDeleteSchema = {
+    deletedBy: {
+        type: DataTypes.DATE,
+        field: 'deleted_by',
+        allowNull: true
+    },
+    deletedAt: {
+        type: DataTypes.DATE,
+        field: 'deleted_at',
+        defaultValue: null,
+        allowNull: true
+    },
+}
 
 const sequelize = MariaDB.getConnection();
 
-const BaseModel = (tableName, fields, useTimestamp) => {
-    let schema = useTimestamp ? {...fields, ...timestampSchema} : fields
-    return sequelize.define('SM', schema, { tableName: tableName })
+const BaseModel = (tableName, fields) => {
+    return sequelize.define('SM', fields, { 
+        tableName: tableName,
+        hooks: {
+            beforeUpdate: (instance, options) => {
+                instance.updatedAt = new Date();
+            },
+        }
+    })
 }
 
 export default BaseModel;
+export {
+    timestampSchema,
+    softDeleteSchema
+}

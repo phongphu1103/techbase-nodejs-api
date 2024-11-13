@@ -1,3 +1,5 @@
+## Install nodemon
+- npm install -g nodemon
 ## Test API voi Postman
 ### Buoc 1: Import db techabse tu thu muc dump
 ### Buoc 2: Mo Postman

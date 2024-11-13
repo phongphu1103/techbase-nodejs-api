@@ -32,22 +32,22 @@ CREATE TABLE `organizations` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `code` varchar(50) NOT NULL,
-  `parent_id` int(10) UNSIGNED NOT NULL,
-  `level` int(10) UNSIGNED NOT NULL,
+  `parent_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `level` tinyint(2) UNSIGNED NOT NULL DEFAULT '1',
   `status` enum('active','delete') NOT NULL DEFAULT 'active',
-  `created_user_id` int(11) DEFAULT NULL,
-  `created_date` datetime DEFAULT NULL,
-  `updated_user_id` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `deleted_user_id` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `organizations`
 --
 
-INSERT INTO `organizations` (`id`, `name`, `code`, `parent_id`, `level`, `status`, `created_user_id`, `created_date`, `updated_user_id`, `updated_date`, `deleted_user_id`, `deleted_date`) VALUES
+INSERT INTO `organizations` (`id`, `name`, `code`, `parent_id`, `level`, `status`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`) VALUES
 (1, 'Director', 'DRT', 0, 1, 'active', NULL, NULL, NULL, NULL, NULL, NULL),
 (2, 'IT 1', 'IT1', 1, 2, 'active', NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'IT 2', 'IT2', 1, 2, 'active', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -69,19 +69,19 @@ CREATE TABLE `positions` (
   `name` varchar(50) NOT NULL,
   `code` varchar(50) NOT NULL,
   `status` enum('active','delete') NOT NULL DEFAULT 'active',
-  `created_user_id` int(11) DEFAULT NULL,
-  `created_date` datetime DEFAULT NULL,
-  `updated_user_id` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `deleted_user_id` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `positions`
 --
 
-INSERT INTO `positions` (`id`, `name`, `code`, `status`, `created_user_id`, `created_date`, `updated_user_id`, `updated_date`, `deleted_user_id`, `deleted_date`) VALUES
+INSERT INTO `positions` (`id`, `name`, `code`, `status`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`) VALUES
 (1, 'Director', 'DRT01', 'active', NULL, NULL, NULL, NULL, NULL, NULL),
 (2, 'Manager', 'MNG01', 'active', NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'Leader', 'LD01', 'active', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -104,19 +104,19 @@ CREATE TABLE `users` (
   `position_id` int(10) UNSIGNED DEFAULT NULL,
   `birthday` date DEFAULT NULL,
   `status` enum('active','delete') NOT NULL DEFAULT 'active',
-  `created_user_id` int(11) DEFAULT NULL,
-  `created_date` datetime DEFAULT NULL,
-  `updated_user_id` int(11) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `deleted_user_id` int(11) DEFAULT NULL,
-  `deleted_date` datetime DEFAULT NULL
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `staff_no`, `position_id`, `birthday`, `status`, `created_user_id`, `created_date`, `updated_user_id`, `updated_date`, `deleted_user_id`, `deleted_date`) VALUES
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `staff_no`, `position_id`, `birthday`, `status`, `created_by`, `created_at`, `updated_by`, `updated_at`, `deleted_by`, `deleted_at`) VALUES
 (1, 'John Doe 1', 'john.doe1@gmail.com', '$2b$09$zefeWLYSJwDxQaa7egIBHefBa.Qiod1Z6DwSyvumhi5X7w8LeYsLG', 'j_doe1', 1, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL),
 (2, 'John Doe 2', 'john.doe2@gmail.com', '$2b$04$YQbkI.9OU4jHbZLht4WS..r5LCISb0.RT.N3zOJ/x4IzV9oG5qD/m', 'j_doe2', 2, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL),
 (3, 'John Doe 3', 'john.doe3@gmail.com', '$2b$09$f89g4Sd.7OuT3Kpof.wIz.Te5J8i4nuR3DFFtbxACMRDYNBpFN/9a', 'j_doe3', 2, NULL, 'active', NULL, NULL, NULL, NULL, NULL, NULL),

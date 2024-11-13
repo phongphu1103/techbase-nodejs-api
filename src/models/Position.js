@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 
-import BaseModel from './BaseModel';
+import BaseModel, { timestampSchema, softDeleteSchema } from './BaseModel';
 
 const schema = {
     id: {
@@ -10,9 +10,11 @@ const schema = {
     },
     name: DataTypes.STRING,
     code: DataTypes.STRING,
-    status: DataTypes.STRING
-};
+    status: DataTypes.STRING,
+    ...timestampSchema,
+    ...softDeleteSchema
+}
 
-const Position = BaseModel('positions', schema, true);
+const Position = BaseModel('positions', schema)
 
-export default Position;
+export default Position

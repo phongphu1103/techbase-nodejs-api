@@ -1,9 +1,9 @@
 export default class Response {
-    success (res, { ...args }) {
+    static success (res, { ...args }) {
         return res.jsonSuccess(args);
     }
 
-    error (res, { ...args }) {
+    static error (res, { ...args }) {
         return res.jsonError(args);
     }
 }

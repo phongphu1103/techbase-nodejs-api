@@ -5,11 +5,13 @@ import Controller from '../Controller';
 import CustomError from '../../utils/CustomError';
 import ExceptionConfig from '../../configs/ExceptionConfig';
 import Position from '../../models/Position';
+import PositionRepository from '../../repositories/PositionRepository';
 import RedisClient from '../../databases/RedisClient';
 
 class PositionsController extends Controller {
     constructor() {
         super()
+        this.repository = new PositionRepository();
     }
     
     async get_index(req, res, next) {
@@ -70,23 +72,22 @@ class PositionsController extends Controller {
     }
 
     async storeExecute (req) {
-        const params = req.body;
-        let data = {};
+        const params = req.body
 
-        const fields = Position.getAttributes();
-        for (let key in fields) {
-            if(params.hasOwnProperty(key)){
-                data[key] = params[key];
-            }
-        }
+        const fields = await this.repository.getAttributes()
+        let data = Object.keys(fields).filter(key => params.hasOwnProperty(key)).reduce((obj, key) => {
+            obj[key] = params[key]
+            return obj
+        }, {})
 
-        const item = await Position.build(data).save();
+        // const item = await Position.build(data).save();
+        const item = await this.repository.createWithAttributes(data)
 
         return {
             code: ExceptionConfig.CODE.CREATED,
             message: ExceptionConfig.COMMON.ITEM_CREATE_SUCCESS,
             record_id: item.id
-        };
+        }
     }
 
     async updateExecute(req) {
@@ -98,22 +99,23 @@ class PositionsController extends Controller {
             throw new CustomError(ExceptionConfig.COMMON.MISSING_PRIMARY_KEY, ExceptionConfig.CODE.BAD_REQUEST)
         }
 
-        const fields = Position.getAttributes();
+        const fields = await this.repository.getAttributes();
         for (let key in fields) {
             if (params.hasOwnProperty(key)) {
                 data[key] = params[key];
             }
         }
 
-        const item = await Position.findByPk(pk, {
-            attributes: { exclude: ['created_user_id', 'created_date', 'updated_user_id', 'updated_date', 'deleted_user_id', 'deleted_date'] }
-        });
-
+        // const item = await Position.findByPk(pk, {
+        //     attributes: { exclude: ['created_by', 'created_at', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at'] }
+        // });
+        const item = await this.repository.model(pk)
         if (!(item instanceof Position)) {
             throw new CustomError(ExceptionConfig.COMMON.ITEM_NOT_FOUND, ExceptionConfig.CODE.NOT_FOUND)
         }
 
-        await item.set(data).save();
+        // await item.set(data).save();
+        await this.repository.updateWithAttributes(data)
 
         return {
             message: ExceptionConfig.COMMON.ITEM_UPDATE_SUCCESS,

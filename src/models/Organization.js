@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 
-import BaseModel from './BaseModel';
+import BaseModel, { timestampSchema, softDeleteSchema } from './BaseModel';
 
 const schema = {
     id: {
@@ -10,11 +10,16 @@ const schema = {
     },
     name: DataTypes.STRING,
     code: DataTypes.STRING,
-    parent_id: DataTypes.INTEGER,
+    parentId: {
+        type: DataTypes.INTEGER,
+        field: 'parent_id'
+    },
     level: DataTypes.TINYINT,
-    status: DataTypes.STRING
-};
+    status: DataTypes.STRING,
+    ...timestampSchema,
+    ...softDeleteSchema
+}
 
-const Organization = BaseModel('organizations', schema, true);
+const Organization = BaseModel('organizations', schema)
 
-export default Organization;
+export default Organization

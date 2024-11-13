@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 
-import BaseModel from './BaseModel';
+import BaseModel,{ timestampSchema, softDeleteSchema } from './BaseModel';
 import Position from './Position';
 
 const schema = {
@@ -12,14 +12,26 @@ const schema = {
     username: DataTypes.STRING,
     password: DataTypes.STRING,
     email: DataTypes.STRING,
-    staff_no: DataTypes.STRING,
+    staffNo: {
+        type: DataTypes.STRING,
+        field: 'staff_no'
+    },
     birthday: DataTypes.DATEONLY,
-    position_id: DataTypes.INTEGER,
-    status: DataTypes.STRING
-};
+    positionId: { 
+        type: DataTypes.INTEGER,
+        field: 'position_id',
+        references: {
+            model: Position,
+            key: 'id'
+        }
+    },
+    status: DataTypes.STRING,
+    ...timestampSchema,
+    ...softDeleteSchema
+}
 
-const User = BaseModel('users', schema, true);
+const User = BaseModel('users', schema)
 
-User.belongsTo(Position, { as: 'Position', foreignKey: 'position_id', targetKey: 'id' });
+User.belongsTo(Position, { as: 'Position', foreignKey: 'position_id', targetKey: 'id' })
 
-export default User;
+export default User
