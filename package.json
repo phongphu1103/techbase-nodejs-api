@@ -15,7 +15,7 @@
     "test:feature": "mocha -r esm \"tests/features\"",
     "migrate": "npx sequelize-cli db:migrate",
     "make:migration": "npx sequelize-cli migration:generate",
-    "make:seed": "npx sequelize-cli seed:generate",
+    "make:seed": "npx sequelize-cli db:seed:all",
     "migrate:undo": "npx sequelize-cli db:migrate:undo",
     "migrate:undo:all": "npx sequelize-cli db:migrate:undo:all"
   },

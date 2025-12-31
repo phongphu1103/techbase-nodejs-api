@@ -28,7 +28,7 @@ app.use(cors())
     .use(compression())
     .use(express.json()) // for parsing application/json
     // .use(cookieParser()) //cookie-parser for reading cookies from request
-    .use(express.urlencoded({ extended: true }))
+    .use(express.urlencoded({ extended: true })) // for parsing URL-encoded application/x-www-form-urlencoded
     .use(SessionMiddleware)
     .use(SessionHandling)
     .use(LoggerTrackingHandling)
@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 app.use(ErrorHandling)
 
 app.listen(AppConfig.API_SERVER_PORT, _ => {
-    if(process.env.NODE_ENV !== "test") console.log(`|>>>>>>>>>>>>>>>>>>>>>>> Server is listening on port: ${AppConfig.API_SERVER_PORT}`)
+    if(process.env.NODE_ENV !== "test") console.log(`|>>>>>>>>>>>>>>>>>> Server is listening on port: ${AppConfig.API_SERVER_PORT}`)
 
     // Initialize mongoose
     // MongoDb.connectDb()
